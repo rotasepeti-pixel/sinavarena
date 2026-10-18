@@ -53,3 +53,4 @@ h2 { margin: 28px 0 8px; font-size: 19px; color: var(--primary); }
 a { color: var(--primary); }
 ul, ol { padding-left: 22px; }
 li { margin: 6px 0; }
+.nav { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 14px; }
