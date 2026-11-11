@@ -5,42 +5,123 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <meta name="referrer" content="no-referrer">
-<title>SınavArena · Giriş</title>
+<title>SınavArena</title>
 <style>
-  :root { color-scheme: light dark; }
-  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #F1F5F9; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0F172A; }
-  @media (prefers-color-scheme: dark) { body { background: #0B1220; color: #F8FAFC; } .kart { background: #111A2E !important; } p { color: #94A3B8 !important; } }
-  .kart { background: #fff; border-radius: 24px; padding: 32px 24px; margin: 16px; max-width: 380px; width: 100%; box-sizing: border-box; text-align: center; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12); }
-  img { width: 72px; height: 72px; }
-  h1 { font-size: 22px; margin: 16px 0 8px; }
-  p { margin: 0 0 22px; color: #475569; line-height: 1.5; }
-  a.dugme { display: block; padding: 16px; border-radius: 16px; background: #1D4ED8; color: #fff; font-weight: 700; font-size: 18px; text-decoration: none; }
-  .hata { color: #DC2626 !important; }
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #EEF2F8; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0F172A; }
+  .kart { background: #fff; border-radius: 28px; padding: 32px 24px; margin: 16px; max-width: 400px; width: calc(100% - 32px); text-align: center; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12); }
+  .marka { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 22px; font-weight: 800; letter-spacing: -0.4px; }
+  .marka img { width: 44px; height: 44px; border-radius: 12px; }
+  .marka span { color: #F59E0B; }
+  h1 { font-size: 22px; margin: 22px 0 8px; }
+  p { margin: 0 0 20px; color: #475569; line-height: 1.55; font-size: 15px; }
+  .dugme { display: block; width: 100%; padding: 16px; border: 0; border-radius: 16px; background: #1E3A8A; color: #fff; font-weight: 700; font-size: 17px; text-decoration: none; cursor: pointer; font-family: inherit; }
+  .dugme:disabled { opacity: 0.6; }
+  .ikincil { display: inline-block; margin-top: 14px; color: #1E3A8A; font-weight: 700; font-size: 15px; text-decoration: none; }
+  form { text-align: left; }
+  .alan { display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 14px; border: 1px solid #DDE3EC; border-radius: 14px; background: #F3F6FB; margin-bottom: 12px; }
+  .alan input { flex: 1; border: 0; background: transparent; font-size: 16px; outline: none; font-family: inherit; color: #0F172A; min-width: 0; }
+  .alan button { border: 0; background: transparent; color: #64748B; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .hata { color: #DC2626; background: #FEF2F2; border-radius: 12px; padding: 10px 12px; font-size: 14px; margin: 0 0 12px; display: none; text-align: left; }
+  .ok { width: 64px; height: 64px; border-radius: 50%; background: #DCFCE7; color: #16A34A; display: grid; place-items: center; margin: 20px auto 0; font-size: 32px; }
+  .gizli { display: none; }
 </style>
 </head>
 <body>
 <div class="kart">
-  <img src="./logo.svg" alt="">
-  <h1 id="baslik">Giriş tamamlandı</h1>
-  <p id="metin">Uygulamaya dönülüyor…</p>
-  <a class="dugme" id="dugme" href="sinavarena://auth/callback">Uygulamaya dön</a>
+  <div class="marka"><img src="https://sinavarena.tr/img/ikon-192.png" alt="">Sınav<span>Arena</span></div>
+
+  <!-- Giriş / onay dönüşü -->
+  <div id="donus">
+    <h1 id="baslik">Giriş tamamlandı</h1>
+    <p id="metin">Uygulamaya dönülüyor…</p>
+    <a class="dugme" id="dugme" href="sinavarena://auth/callback">Uygulamaya dön</a>
+  </div>
+
+  <!-- Şifre sıfırlama: yeni şifre burada belirlenir (telefonda da bilgisayarda da çalışır) -->
+  <div id="sifre" class="gizli">
+    <h1>Yeni şifreni belirle</h1>
+    <p>En az 6 karakterli yeni bir şifre yaz. Ardından uygulamada bu şifreyle giriş yapabilirsin.</p>
+    <form id="form" novalidate>
+      <div class="alan"><input id="s1" type="password" placeholder="Yeni şifre" autocomplete="new-password" minlength="6"><button type="button" id="goster">Göster</button></div>
+      <div class="alan"><input id="s2" type="password" placeholder="Yeni şifreyi tekrar yaz" autocomplete="new-password"></div>
+      <div class="hata" id="hata"></div>
+      <button class="dugme" id="kaydet" type="submit">Şifremi kaydet</button>
+    </form>
+  </div>
+
+  <!-- Şifre değişti -->
+  <div id="tamam" class="gizli">
+    <div class="ok">✓</div>
+    <h1>Şifren değişti</h1>
+    <p>Artık SınavArena uygulamasında e-posta adresin ve yeni şifrenle giriş yapabilirsin.</p>
+    <a class="dugme" href="sinavarena://">SınavArena'yı aç</a>
+  </div>
 </div>
 <script>
-  // Google girişinden sonra Supabase buraya döner (oturum bilgisi adresin # kısmında, sunucuya gitmez).
-  // Sayfa bilgiyi olduğu gibi uygulamanın adresine taşır. Chrome otomatik geçişi engellerse
-  // (ör. telefona yeni Google hesabı eklendikten sonra) kullanıcı düğmeye dokunarak döner.
+  // Supabase buraya döner; oturum bilgisi adresin # kısmındadır (sunucuya gitmez).
+  // - Şifre sıfırlama (type=recovery): yeni şifre bu sayfada belirlenir.
+  // - Diğerleri (Google girişi, e-posta onayı): bilgi olduğu gibi uygulamaya taşınır; Chrome otomatik
+  //   geçişi engellerse kullanıcı "Uygulamaya dön" düğmesiyle döner.
   (function () {
+    var SUPABASE = 'https://mjfplkinloddpcpdwpop.supabase.co';
+    var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qZnBsa2lubG9kZHBjcGR3cG9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNDU1MjksImV4cCI6MjEwNzkyMTUyOX0.4QUk6aqkhuPrLREaplPEi9rkhSCgvgyZtFBwvnTO6MQ'; // herkese açık (anon) anahtar; uygulamanın içinde de bulunur
     var ek = location.hash || (location.search ? '#' + location.search.slice(1) : '');
-    var hedef = 'sinavarena://auth/callback' + ek;
-    var dugme = document.getElementById('dugme');
-    dugme.href = hedef;
-    if (/error/.test(ek)) {
-      document.getElementById('baslik').textContent = 'Giriş tamamlanamadı';
-      var m = /error_description=([^&]*)/.exec(ek);
-      var metin = document.getElementById('metin');
-      metin.textContent = m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : 'Lütfen uygulamaya dönüp yeniden dene.';
-      metin.className = 'hata';
+    var p = new URLSearchParams(ek.replace(/^#/, ''));
+    var $ = function (id) { return document.getElementById(id); };
+
+    if (p.get('error') || p.get('error_code')) {
+      $('baslik').textContent = p.get('error_code') === 'otp_expired' ? 'Bağlantının süresi dolmuş' : 'İşlem tamamlanamadı';
+      $('metin').textContent = p.get('error_code') === 'otp_expired'
+        ? 'Bu bağlantı daha önce kullanılmış ya da süresi dolmuş. Uygulamada "Şifremi unuttum"a dokunup yeni bir bağlantı iste.'
+        : (p.get('error_description') || 'Lütfen uygulamaya dönüp yeniden dene.').replace(/\+/g, ' ');
+      $('metin').style.color = '#DC2626';
+      $('dugme').href = 'sinavarena://';
+      return;
     }
+
+    if (p.get('type') === 'recovery' && p.get('access_token')) {
+      $('donus').className = 'gizli';
+      $('sifre').className = '';
+      history.replaceState(null, '', location.pathname); // anahtar adres çubuğunda kalmasın
+      var token = p.get('access_token');
+      $('goster').onclick = function () {
+        var g = $('s1').type === 'password';
+        $('s1').type = $('s2').type = g ? 'text' : 'password';
+        this.textContent = g ? 'Gizle' : 'Göster';
+      };
+      var hata = function (m) { $('hata').textContent = m; $('hata').style.display = m ? 'block' : 'none'; };
+      $('form').onsubmit = function (e) {
+        e.preventDefault();
+        var s1 = $('s1').value, s2 = $('s2').value;
+        if (s1.length < 6) return hata('Şifre en az 6 karakter olmalı.');
+        if (s1 !== s2) return hata('Şifreler eşleşmiyor.');
+        hata('');
+        $('kaydet').disabled = true;
+        $('kaydet').textContent = 'Kaydediliyor…';
+        fetch(SUPABASE + '/auth/v1/user', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', apikey: ANON, Authorization: 'Bearer ' + token },
+          body: JSON.stringify({ password: s1 })
+        }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); }).then(function (x) {
+          if (x.ok) { $('sifre').className = 'gizli'; $('tamam').className = ''; return; }
+          var m = (x.j && (x.j.msg || x.j.message || x.j.error_description)) || '';
+          hata(/same/i.test(m) ? 'Yeni şifre eskisiyle aynı olamaz.' : /expired|invalid|jwt/i.test(m) ? 'Bağlantının süresi dolmuş. Uygulamadan yeni bir sıfırlama bağlantısı iste.' : /weak|short/i.test(m) ? 'Daha güçlü bir şifre seç.' : 'Şifre kaydedilemedi, yeniden dene.');
+          $('kaydet').disabled = false;
+          $('kaydet').textContent = 'Şifremi kaydet';
+        }).catch(function () {
+          hata('Bağlantı kurulamadı. İnternetini kontrol edip yeniden dene.');
+          $('kaydet').disabled = false;
+          $('kaydet').textContent = 'Şifremi kaydet';
+        });
+      };
+      return;
+    }
+
+    var hedef = 'sinavarena://auth/callback' + ek;
+    $('dugme').href = hedef;
+    if (p.get('type') === 'signup') $('baslik').textContent = 'Hesabın onaylandı';
     try { location.replace(hedef); } catch (e) {}
   })();
 </script>
